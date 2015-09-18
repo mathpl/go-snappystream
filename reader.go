@@ -260,7 +260,7 @@ func (r *reader) readStreamID() error {
 	if err != nil {
 		return err
 	}
-	if !bytes.Equal(block, streamID[4:]) {
+	if !bytes.Equal(block, streamID[4:]) && !bytes.Equal(block, altStreamID[4:]) {
 		return fmt.Errorf("invalid stream identifier block")
 	}
 	return nil

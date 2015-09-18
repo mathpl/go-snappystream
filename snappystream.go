@@ -32,15 +32,17 @@ const SkipVerifyChecksum = false
 
 // Block types defined by the snappy framed format specification.
 const (
-	blockCompressed       = 0x00
-	blockUncompressed     = 0x01
-	blockPadding          = 0xfe
-	blockStreamIdentifier = 0xff
+	blockCompressed          = 0x00
+	blockUncompressed        = 0x01
+	blockPadding             = 0xfe
+	blockStreamIdentifier    = 0xff
+	blockStreamIdentifierAlt = 0x80
 )
 
 // streamID is the stream identifier block that begins a valid snappy framed
 // stream.
-var streamID = []byte{0xff, 0x06, 0x00, 0x00, 0x73, 0x4e, 0x61, 0x50, 0x70, 0x59}
+var streamID = []byte{blockStreamIdentifier, 0x06, 0x00, 0x00, 0x73, 0x4e, 0x61, 0x50, 0x70, 0x59}
+var altStreamID = []byte{blockStreamIdentifierAlt 0x06, 0x00, 0x00, 0x73, 0x4e, 0x61, 0x50, 0x70, 0x59}
 
 // maskChecksum implements the checksum masking algorithm described by the spec.
 func maskChecksum(c uint32) uint32 {
