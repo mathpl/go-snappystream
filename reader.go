@@ -172,7 +172,7 @@ func (r *reader) nextFrame(w io.Writer) (int, error) {
 		// a stream identifier may appear anywhere and contains no information.
 		// it must appear at the beginning of the stream.  when found, validate
 		// it and continue to the next block.
-		if r.hdr[0] == blockStreamIdentifier {
+		if r.hdr[0] == blockStreamIdentifier || r.hdr[0] == blockStreamIdentifierAlt {
 			err := r.readStreamID()
 			if err != nil {
 				return 0, err
@@ -250,7 +250,7 @@ func (r *reader) decodeBlock(w io.Writer) (int, error) {
 
 func (r *reader) readStreamID() error {
 	// the length of the block is fixed so don't decode it from the header.
-	if !bytes.Equal(r.hdr, streamID[:4]) {
+	if !bytes.Equal(r.hdr, streamID[:4]) && !bytes.Equal(r.hdr, altStreamID[:4]) {
 		return fmt.Errorf("invalid stream identifier length")
 	}
 
